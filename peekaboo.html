@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#81D4FA">
+    <title>Peek-a-Boo</title>
+    <link rel="manifest" href="manifest.json">
+    <style>
+        body {
+            margin: 0; background-color: #81D4FA; height: 100vh; overflow: hidden;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            font-family: system-ui, sans-serif; user-select: none;
+        }
+        .home-btn {
+            position: absolute; top: 20px; left: 20px; font-size: 30px; cursor: pointer; z-index: 10;
+        }
+        .box-container {
+            width: 250px; height: 250px; position: relative; cursor: pointer;
+        }
+        .box {
+            width: 100%; height: 100%; background: #FF9800; border: 8px solid #E65100;
+            border-radius: 20px; display: flex; align-items: center; justify-content: center;
+            font-size: 80px; box-shadow: 0 10px 0 #E65100;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: absolute; top: 0; left: 0;
+        }
+        .hidden-item {
+            font-size: 100px; position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%) scale(0); opacity: 0;
+            transition: all 0.4s ease-out;
+        }
+        
+        .open .box { transform: scale(0); opacity: 0; }
+        .open .hidden-item { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+        
+        .instruction {
+            margin-top: 50px; font-size: 24px; color: white; font-weight: bold; text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="home-btn" onclick="window.location.href='index.html'">🏠</div>
+
+    <div class="box-container" onclick="toggleBox()" id="container">
+        <div class="hidden-item" id="item">🍎</div>
+        <div class="box">❓</div>
+    </div>
+
+    <div class="instruction" id="text">Tap the Box!</div>
+
+    <script>
+        const emojis = ['🍎','🚗','🧸','⚽️','🍪','🐱','🚀','🐸','🦆'];
+        const colors = ['#81D4FA', '#A5D6A7', '#FFF59D', '#FFAB91', '#CE93D8'];
+        let isOpen = false;
+
+        function toggleBox() {
+            const container = document.getElementById('container');
+            
+            if (!isOpen) {
+                container.classList.add('open');
+                document.getElementById('text').innerText = "Peek-a-Boo!";
+                isOpen = true;
+            } else {
+                container.classList.remove('open');
+                setTimeout(() => {
+                    const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+                    document.getElementById('item').innerText = randomEmoji;
+                    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                    document.body.style.backgroundColor = randomColor;
+                    document.getElementById('text').innerText = "Tap the Box!";
+                }, 300);
+                isOpen = false;
+            }
+        }
+    </script>
+</body>
+</html>

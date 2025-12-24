@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#FFEB3B">
+    <title>The Zoo</title>
+    <link rel="manifest" href="manifest.json">
+    <style>
+        body { 
+            background-color: #FFEB3B; margin: 0; padding: 20px; 
+            font-family: system-ui, -apple-system, sans-serif;
+            display: flex; flex-direction: column; height: 100vh; box-sizing: border-box;
+            padding-top: max(20px, env(safe-area-inset-top));
+            padding-bottom: max(40px, env(safe-area-inset-bottom));
+            user-select: none; -webkit-user-select: none;
+        }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        h1 { margin: 0; color: #5D4037; font-size: 28px; }
+        .home-btn { font-size: 30px; text-decoration: none; cursor: pointer; }
+        
+        .grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 15px; flex-grow: 1;
+        }
+        .animal-card {
+            background: white; border-radius: 20px; border: 4px solid #5D4037;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            cursor: pointer; box-shadow: 0 5px 0 #5D4037;
+            transition: all 0.1s; position: relative; overflow: hidden;
+        }
+        .animal-card:active { transform: translateY(5px); box-shadow: none; background: #FFF9C4; border-color: #FF9800; }
+        .emoji { font-size: 60px; line-height: 1; z-index: 2; pointer-events: none; }
+        .name { font-size: 20px; font-weight: bold; color: #5D4037; margin-top: 10px; z-index: 2; pointer-events: none;}
+        
+        /* Ripple effect for visual feedback */
+        .ripple {
+            position: absolute; border-radius: 50%; background: rgba(255, 152, 0, 0.4);
+            transform: scale(0); animation: ripple-anim 0.6s linear; pointer-events: none;
+        }
+        @keyframes ripple-anim {
+            to { transform: scale(4); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>The Zoo 🐮</h1>
+        <div class="home-btn" onclick="window.location.href='index.html'">🏠</div>
+    </div>
+
+    <div class="grid">
+        <div class="animal-card" onmousedown="play('cow', this)" ontouchstart="play('cow', this)">
+            <div class="emoji">🐮</div><div class="name">Cow</div>
+        </div>
+        <div class="animal-card" onmousedown="play('dog', this)" ontouchstart="play('dog', this)">
+            <div class="emoji">🐶</div><div class="name">Dog</div>
+        </div>
+        <div class="animal-card" onmousedown="play('cat', this)" ontouchstart="play('cat', this)">
+            <div class="emoji">🐱</div><div class="name">Cat</div>
+        </div>
+        <div class="animal-card" onmousedown="play('lion', this)" ontouchstart="play('lion', this)">
+            <div class="emoji">🦁</div><div class="name">Lion</div>
+        </div>
+        <div class="animal-card" onmousedown="play('monkey', this)" ontouchstart="play('monkey', this)">
+            <div class="emoji">🐵</div><div class="name">Monkey</div>
+        </div>
+        <div class="animal-card" onmousedown="play('sheep', this)" ontouchstart="play('sheep', this)">
+            <div class="emoji">🐑</div><div class="name">Sheep</div>
+        </div>
+    </div>
+
+    <script>
+        // Real MP3 links from Google's animal sounds library
+        const sounds = {
+            cow: new Audio('https://www.google.com/logos/fnbx/animal_sounds/cow.mp3'),
+            dog: new Audio('https://www.google.com/logos/fnbx/animal_sounds/dog.mp3'),
+            cat: new Audio('https://www.google.com/logos/fnbx/animal_sounds/cat.mp3'),
+            lion: new Audio('https://www.google.com/logos/fnbx/animal_sounds/lion.mp3'),
+            monkey: new Audio('https://www.google.com/logos/fnbx/animal_sounds/ape.mp3'),
+            sheep: new Audio('https://www.google.com/logos/fnbx/animal_sounds/sheep.mp3')
+        };
+
+        function play(animal, card) {
+            // 1. Visual Effect
+            createRipple(card);
+            
+            // 2. Play Sound
+            const audio = sounds[animal];
+            if (audio) {
+                audio.currentTime = 0; // Restart sound if already playing
+                audio.play().catch(e => console.log("Audio play error: ", e));
+            }
+        }
+
+        function createRipple(card) {
+            // Remove old ripples
+            const old = card.getElementsByClassName('ripple');
+            while(old.length > 0){ old[0].parentNode.removeChild(old[0]); }
+
+            const ripple = document.createElement("span");
+            ripple.classList.add("ripple");
+            const rect = card.getBoundingClientRect();
+            // Center the ripple
+            const size = Math.max(rect.width, rect.height);
+            ripple.style.width = ripple.style.height = `${size}px`;
+            ripple.style.left = `${(rect.width - size)/2}px`;
+            ripple.style.top = `${(rect.height - size)/2}px`;
+            card.appendChild(ripple);
+        }
+    </script>
+</body>
+</html>

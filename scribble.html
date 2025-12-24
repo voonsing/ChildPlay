@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#000000">
+    <title>Scribble</title>
+    <link rel="manifest" href="manifest.json">
+    <style>
+        body { margin: 0; background: black; overflow: hidden; touch-action: none; }
+        canvas { display: block; }
+        .controls {
+            position: fixed; top: 20px; left: 20px; right: 20px;
+            display: flex; justify-content: space-between; pointer-events: none;
+        }
+        .btn {
+            pointer-events: auto; font-size: 24px; background: rgba(255,255,255,0.2);
+            color: white; border-radius: 50%; width: 50px; height: 50px;
+            display: flex; align-items: center; justify-content: center;
+            border: 1px solid rgba(255,255,255,0.5); cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="controls">
+        <div class="btn" onclick="window.location.href='index.html'">🏠</div>
+        <div class="btn" onclick="clearCanvas()">🗑</div>
+    </div>
+    <canvas id="drawArea"></canvas>
+
+    <script>
+        const canvas = document.getElementById('drawArea');
+        const ctx = canvas.getContext('2d');
+        let hue = 0;
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        function draw(e) {
+            e.preventDefault(); 
+            const touches = e.touches || [e]; 
+
+            for (let i = 0; i < touches.length; i++) {
+                const x = touches[i].clientX;
+                const y = touches[i].clientY;
+
+                ctx.fillStyle = `hsl(${hue}, 100%, 50%)`;
+                ctx.beginPath();
+                ctx.arc(x, y, 15, 0, Math.PI * 2); 
+                ctx.fill();
+            }
+            hue = (hue + 2) % 360; 
+        }
+
+        function clearCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        canvas.addEventListener('touchmove', draw, {passive: false});
+        canvas.addEventListener('mousemove', (e) => { if(e.buttons === 1) draw(e); });
+    </script>
+</body>
+</html>
