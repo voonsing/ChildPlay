@@ -1,0 +1,16 @@
+{
+  "name": "Junior's Box",
+  "short_name": "Junior",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#FF9800",
+  "theme_color": "#FF9800",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
