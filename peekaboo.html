@@ -15,10 +15,9 @@
         }
         .home-btn {
             position: absolute; top: 20px; left: 20px; font-size: 30px; cursor: pointer; z-index: 10;
+            text-decoration: none; border: none; background: none;
         }
-        .box-container {
-            width: 250px; height: 250px; position: relative; cursor: pointer;
-        }
+        .box-container { width: 250px; height: 250px; position: relative; cursor: pointer; }
         .box {
             width: 100%; height: 100%; background: #FF9800; border: 8px solid #E65100;
             border-radius: 20px; display: flex; align-items: center; justify-content: center;
@@ -28,20 +27,17 @@
         }
         .hidden-item {
             font-size: 100px; position: absolute; top: 50%; left: 50%;
-            transform: translate(-50%, -50%) scale(0); opacity: 0;
-            transition: all 0.4s ease-out;
+            transform: translate(-50%, -50%) scale(0); opacity: 0; transition: all 0.4s ease-out;
         }
-        
         .open .box { transform: scale(0); opacity: 0; }
         .open .hidden-item { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
-        
         .instruction {
             margin-top: 50px; font-size: 24px; color: white; font-weight: bold; text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
         }
     </style>
 </head>
 <body>
-    <div class="home-btn" onclick="window.location.href='index.html'">🏠</div>
+    <a href="index.html" class="home-btn">🏠</a>
 
     <div class="box-container" onclick="toggleBox()" id="container">
         <div class="hidden-item" id="item">🍎</div>
@@ -54,21 +50,15 @@
         const emojis = ['🍎','🚗','🧸','⚽️','🍪','🐱','🚀','🐸','🦆'];
         const colors = ['#81D4FA', '#A5D6A7', '#FFF59D', '#FFAB91', '#CE93D8'];
         let isOpen = false;
-
         function toggleBox() {
             const container = document.getElementById('container');
-            
             if (!isOpen) {
-                container.classList.add('open');
-                document.getElementById('text').innerText = "Peek-a-Boo!";
-                isOpen = true;
+                container.classList.add('open'); document.getElementById('text').innerText = "Peek-a-Boo!"; isOpen = true;
             } else {
                 container.classList.remove('open');
                 setTimeout(() => {
-                    const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
-                    document.getElementById('item').innerText = randomEmoji;
-                    const randomColor = colors[Math.floor(Math.random() * colors.length)];
-                    document.body.style.backgroundColor = randomColor;
+                    document.getElementById('item').innerText = emojis[Math.floor(Math.random() * emojis.length)];
+                    document.body.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
                     document.getElementById('text').innerText = "Tap the Box!";
                 }, 300);
                 isOpen = false;
